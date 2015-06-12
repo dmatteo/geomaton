@@ -9,12 +9,26 @@
                 margin: 0px;
                 padding: 0px
             }
-            .panel {
-                width: 400px;
-                margin: 1% auto;
+            .panel__input {
+                margin-top: 1em;
+                text-align: center;
+            }
+            .panel__container {
+                width: 800px;
+                margin: 0 auto;
+            }
+            .panel__google-structure,
+            .panel__results {
+                display: inline-block;
+                vertical-align: top;
+                width: 42%;
+                margin: 0 2%;
+            }
+            .panel--title {
+                text-align: center;
             }
             .address-segment {
-                padding: 10px;
+                padding: 14px;
                 margin-bottom: 12px;
                 border: solid 1px black;
                 box-shadow: 2px 2px 8px -2px;
@@ -23,101 +37,27 @@
         </style>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-        <script>
-            var geocoder;
-
-            var lookupTable = {
-                street_address: 'address',
-                street_number: 'address',
-                route: 'address',
-                intersection: 'address',
-                political: 'city',
-                country: 'country',
-                administrative_area_level_1: 'state',
-                administrative_area_level_2: 'state', // these are US counties
-                administrative_area_level_3: 'state', // smaller and smaller
-                administrative_area_level_4: 'state', // ignore or concat?
-                administrative_area_level_5: 'state',
-                colloquial_area: 'city',
-                locality: 'city',
-                ward: 'city',
-                sublocality: 'city',
-                neighborhood: 'address',
-                premise: 'address',
-                subpremise: 'address',
-                postal_code: 'zip',
-                natural_feature: 'address',
-                airport: 'address',
-                park: 'address',
-                point_of_interest: 'address'
-            };
-
-            function initialize() {
-                geocoder = new google.maps.Geocoder();
-            }
-
-            function codeAddressAndShowList() {
-                var address = document.getElementById('address').value;
-                geocoder.geocode( { 'address': address}, function(results, status) {
-
-                    var struct = '';
-                    if (status == google.maps.GeocoderStatus.OK) {
-
-                        var structured = results[0].address_components;
-                        var formatted = results[0].formatted_address;
-
-                        structured.map(function(comp) {
-                            struct += '<div class="address-segment"><pre>'+JSON.stringify(comp, null, 2)+'</pre></div>';
-
-                            var sIdx = formatted.indexOf(comp.short_name), start, end;
-                            var lIdx = formatted.indexOf(comp.long_name);
-
-                            if (sIdx !== -1) {
-                                start = formatted[sIdx-1];
-                                end = formatted[sIdx+comp.short_name.length];
-
-                                if ((sIdx === 0 || start === ' ' || start === ',') &&
-                                        (end === undefined || end === ' ' || end === ',' )) {
-                                    console.log('hit: ', comp.short_name, ' ->', lookupTable[comp.types[0]], comp.types);
-                                }
-
-                            } else if (lIdx !== -1) {
-                                start = formatted[lIdx-1];
-                                end = formatted[lIdx+comp.long_name.length];
-
-                                if ((lIdx === 0 || start === ' ' || start === ',') &&
-                                        (end === undefined || end === ' ' || end === ',' )) {
-                                    console.log('hit: ', comp.long_name, ' ->', lookupTable[comp.types[0]], comp.types);
-                                }
-                            }
-                        });
-
-                        $('#structured, #formatted').empty();
-                        $('#structured').append(struct);
-                        $('#formatted').text('Addr: ' + results[0].formatted_address);
-
-                    } else {
-                        alert('Geocode was not successful for the following reason: ' + status);
-                    }
-                });
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-        </script>
+        <script src="geocoder.js"></script>
     </head>
     <body>
 
-        <div class="panel">
+        <div class="panel__input">
             <input id="address" type="text" value="Sydney, NSW">
             <input type="button" value="Geocode" onclick="codeAddressAndShowList()">
         </div>
-        <div class="panel">
-            <p id="formatted"></p>
-            <div id="structured"></div>
-            <a href="https://developers.google.com/maps/documentation/geocoding/#Types">G-Types</a>
-        </div>
 
+        <div class="panel__container">
+            <div class="panel__google-structure">
+                <p class="panel--title" id="formatted"></p>
+                <div id="structured"></div>
+                <a href="https://developers.google.com/maps/documentation/geocoding/#Types">G-Types</a>
+            </div>
+
+            <div class="panel__results">
+                <p class="panel--title"><strong>Parsed Results:</strong></p>
+                <div id="panel__results"></div>
+            </div>
+        </div>
 
     </body>
 </html>
