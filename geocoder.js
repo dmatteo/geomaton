@@ -57,48 +57,9 @@
         var purgedFormatted = formatted;
 
         structured.map(function (comp) {
-
-          //debugger;
-
           struct += '<div class="address-segment"><pre>' + JSON.stringify(comp, null, 2) + '</pre></div>';
 
-          if (!lookupTable[comp.types[0]] || lookupTable[comp.types[0]] === 'address') {
-            return ;
-          }
-
-          var sIdx = formatted.lastIndexOf(comp.short_name), start, end;
-          var lIdx = formatted.lastIndexOf(comp.long_name);
-
-          if (sIdx !== -1) {
-            start = formatted[sIdx - 1];
-            end = formatted[sIdx + comp.short_name.length];
-
-            if ((sIdx === 0 || start === ' ' || start === ',') &&
-              (end === undefined || end === ' ' || end === ',' )) {
-              parsed += '' +
-                '<div>' +
-                  '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
-                  '<span>'+comp.short_name+'</span>' +
-                '</div>';
-
-              formatted = formatted.splice(sIdx, comp.short_name.length);
-            }
-
-          } else if (lIdx !== -1) {
-            start = formatted[lIdx - 1];
-            end = formatted[lIdx + comp.long_name.length];
-
-            if ((lIdx === 0 || start === ' ' || start === ',') &&
-              (end === undefined || end === ' ' || end === ',' )) {
-              parsed += '' +
-                '<div>' +
-                  '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
-                  '<span>'+comp.long_name+'</span>' +
-                '</div>';
-
-              formatted = formatted.splice(lIdx, comp.long_name.length);
-            }
-          }
+          parsed += subtractiveParsing(comp, formatted);
         });
 
         parsed += '' +
@@ -116,6 +77,51 @@
         alert('Geocode was not successful for the following reason: ' + status);
       }
     });
+  }
+
+  function subtractiveParsing(comp, formatted) {
+
+    if (!lookupTable[comp.types[0]] || lookupTable[comp.types[0]] === 'address') {
+      return ;
+    }
+
+    var parsed = '';
+
+    var sIdx = formatted.lastIndexOf(comp.short_name), start, end;
+    var lIdx = formatted.lastIndexOf(comp.long_name);
+
+    if (sIdx !== -1) {
+      start = formatted[sIdx - 1];
+      end = formatted[sIdx + comp.short_name.length];
+
+      if ((sIdx === 0 || start === ' ' || start === ',') &&
+        (end === undefined || end === ' ' || end === ',' )) {
+        parsed += '' +
+          '<div>' +
+          '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
+          '<span>'+comp.short_name+'</span>' +
+          '</div>';
+
+        formatted = formatted.splice(sIdx, comp.short_name.length);
+      }
+
+    } else if (lIdx !== -1) {
+      start = formatted[lIdx - 1];
+      end = formatted[lIdx + comp.long_name.length];
+
+      if ((lIdx === 0 || start === ' ' || start === ',') &&
+        (end === undefined || end === ' ' || end === ',' )) {
+        parsed += '' +
+          '<div>' +
+          '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
+          '<span>'+comp.long_name+'</span>' +
+          '</div>';
+
+        formatted = formatted.splice(lIdx, comp.long_name.length);
+      }
+    }
+
+    return parsed;
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
