@@ -48,7 +48,8 @@
       if (status == google.maps.GeocoderStatus.OK) {
 
         var struct = '<div class="address-segment"><strong>Formatted: </strong>'+results[0].formatted_address+'</div>';
-        var parsed = '<div class="address-segment">';
+        var subParsed = '<div class="address-segment">';
+        var addParsed = '<div class="address-segment">';
 
         console.log(results);
 
@@ -56,21 +57,30 @@
         var formatted = results[0].formatted_address;
         var purgedFormatted = formatted;
 
-        structured.map(function (comp) {
-          struct += '<div class="address-segment"><pre>' + JSON.stringify(comp, null, 2) + '</pre></div>';
 
-          parsed += subtractiveParsing(comp, formatted);
+        struct += '<div class="address-segment"><pre>' + JSON.stringify(structured, null, 2) + '</pre></div>';
+
+        console.log(structured);
+        structured.forEach(function (comp, idx) {
+
+          subParsed += subtractiveParsing(comp, formatted);
+          addParsed += addictiveParsing(comp);
+
+          structured.splice(idx, 1);
         });
 
-        parsed += '' +
+        subParsed += '' +
           '<div>' +
             '<strong>address: </strong>' +
             '<span>'+formatted.replace(/[, ]*$/, '')+'</span>' +
-          '</div>';
+          '</div>'+
+        '</div>';
+
+        addParsed += '</div>';
 
         $('#structured, #formatted, #panel__results').empty();
         $('#structured').append(struct);
-        $('#panel__results').append(parsed + '</div>');
+        $('#panel__results').append(subParsed).append(addParsed);
 
 
       } else {
@@ -122,6 +132,50 @@
     }
 
     return parsed;
+  }
+
+  function addictiveParsing(elm) {
+
+    var lookupTable = {
+      //address: [
+      //  'street_address',
+      //  'street_number',
+      //  'route'
+      //],
+      country: [
+        'country'
+      ],
+      city: [
+        'locality'
+      ],
+      state: [
+        'administrative_area_level_1',
+        'administrative_area_level_2',
+        'administrative_area_level_3'
+      ],
+      zip: [
+        'postal_code'
+      ]
+    };
+    var parsed = '';
+
+    Object.keys(lookupTable).forEach(function(typeKey) {
+      var match = false;
+      lookupTable[typeKey].forEach(function(subtype) {
+        if (match === false && elm.types.indexOf(subtype) !== -1) {
+          parsed += '' +
+            '<div>' +
+            '<strong>'+typeKey+': </strong>' +
+            '<span>'+elm.long_name+'</span>' +
+            '</div>';
+
+          match = true;
+        }
+      })
+    });
+
+    return parsed;
+
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
