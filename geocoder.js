@@ -50,10 +50,15 @@
         var purgedFormatted = formatted;
 
         structured.map(function (comp) {
+
           struct += '<div class="address-segment"><pre>' + JSON.stringify(comp, null, 2) + '</pre></div>';
 
-          var sIdx = formatted.indexOf(comp.short_name), start, end;
-          var lIdx = formatted.indexOf(comp.long_name);
+          if (!lookupTable[comp.types[0]] || lookupTable[comp.types[0]] === 'address') {
+            return ;
+          }
+
+          var sIdx = formatted.lastIndexOf(comp.short_name), start, end;
+          var lIdx = formatted.lastIndexOf(comp.long_name);
 
           if (sIdx !== -1) {
             start = formatted[sIdx - 1];
@@ -67,7 +72,7 @@
                   '<span>'+comp.short_name+'</span>' +
                 '</div>';
 
-              formatted.splice(sIdx, comp.short_name.length);
+              formatted = formatted.splice(sIdx, comp.short_name.length);
             }
 
           } else if (lIdx !== -1) {
@@ -82,10 +87,16 @@
                   '<span>'+comp.long_name+'</span>' +
                 '</div>';
 
-              formatted.splice(lIdx, comp.long_name.length);
+              formatted = formatted.splice(lIdx, comp.long_name.length);
             }
           }
         });
+
+        parsed += '' +
+          '<div>' +
+            '<strong>address: </strong>' +
+            '<span>'+formatted.replace(/[, ]*$/, '')+'</span>' +
+          '</div>';
 
         $('#structured, #formatted, #panel__results').empty();
         $('#structured').append(struct);
