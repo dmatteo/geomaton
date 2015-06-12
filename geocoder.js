@@ -18,6 +18,11 @@
     locality: 'city',
     ward: 'city',
     sublocality: 'city',
+    sublocality_level_1: 'city',
+    sublocality_level_2: 'city',
+    sublocality_level_3: 'city',
+    sublocality_level_4: 'city',
+    sublocality_level_5: 'city',
     neighborhood: 'address',
     premise: 'address',
     subpremise: 'address',
@@ -40,16 +45,20 @@
         return this.slice(0, index) + (add || "") + this.slice(index + count);
       };
 
-      var struct = '';
-      var parsed = '<div class="address-segment">';
-
       if (status == google.maps.GeocoderStatus.OK) {
+
+        var struct = '<div class="address-segment"><strong>Formatted: </strong>'+results[0].formatted_address+'</div>';
+        var parsed = '<div class="address-segment">';
+
+        console.log(results);
 
         var structured = results[0].address_components;
         var formatted = results[0].formatted_address;
         var purgedFormatted = formatted;
 
         structured.map(function (comp) {
+
+          //debugger;
 
           struct += '<div class="address-segment"><pre>' + JSON.stringify(comp, null, 2) + '</pre></div>';
 
@@ -101,7 +110,7 @@
         $('#structured, #formatted, #panel__results').empty();
         $('#structured').append(struct);
         $('#panel__results').append(parsed + '</div>');
-        $('#formatted').text('Addr: ' + results[0].formatted_address);
+
 
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
