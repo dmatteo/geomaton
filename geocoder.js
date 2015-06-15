@@ -1,67 +1,10 @@
 
 
-  var geocoder;
-
-  var subLookupTable = {
-    street_address: 'address',
-    street_number: 'address',
-    route: 'address',
-    intersection: 'address',
-    political: 'city',
-    country: 'country',
-    administrative_area_level_1: 'state',
-    administrative_area_level_2: 'state', // these are US counties
-    administrative_area_level_3: 'state', // smaller and smaller
-    administrative_area_level_4: 'state', // ignore or concat?
-    administrative_area_level_5: 'state',
-    colloquial_area: 'city',
-    locality: 'city',
-    ward: 'city',
-    sublocality: 'city',
-    sublocality_level_1: 'city',
-    sublocality_level_2: 'city',
-    sublocality_level_3: 'city',
-    sublocality_level_4: 'city',
-    sublocality_level_5: 'city',
-    neighborhood: 'address',
-    premise: 'address',
-    subpremise: 'address',
-    postal_code: 'zip',
-    natural_feature: 'address',
-    airport: 'address',
-    park: 'address',
-    point_of_interest: 'address'
-  };
-
-  var addLookupTable = {
-    //address: [
-    //  'street_address',
-    //  'street_number',
-    //  'route'
-    //],
-    country: [
-      'country'
-    ],
-    city: [
-      'locality',
-      'sublocality',
-      'sublocality_level_1',
-      'sublocality_level_2',
-      'sublocality_level_3',
-      'sublocality_level_4',
-      'sublocality_level_5'
-    ],
-    state: [
-      'administrative_area_level_1',
-      'administrative_area_level_2',
-      'administrative_area_level_3',
-      'administrative_area_level_4',
-      'administrative_area_level_5'
-    ],
-    zip: [
-      'postal_code'
-    ]
-  };
+  var geocoder,
+    addrParts,
+    subLookupTable,
+    addressLookupTable,
+    addLookupTable;
 
   function initialize() {
     geocoder = new google.maps.Geocoder();
@@ -76,6 +19,72 @@
   function codeAddressAndShowList() {
     var address = document.getElementById('address').value;
     geocoder.geocode({'address': address}, function (results, status) {
+
+      addrParts = [];
+      subLookupTable = {
+        street_address: 'address',
+        street_number: 'address',
+        route: 'address',
+        intersection: 'address',
+        political: 'city',
+        country: 'country',
+        administrative_area_level_1: 'state',
+        administrative_area_level_2: 'state', // these are US counties
+        administrative_area_level_3: 'state', // smaller and smaller
+        administrative_area_level_4: 'state', // ignore or concat?
+        administrative_area_level_5: 'state',
+        colloquial_area: 'city',
+        locality: 'city',
+        ward: 'city',
+        sublocality: 'city',
+        sublocality_level_1: 'city',
+        sublocality_level_2: 'city',
+        sublocality_level_3: 'city',
+        sublocality_level_4: 'city',
+        sublocality_level_5: 'city',
+        neighborhood: 'address',
+        premise: 'address',
+        subpremise: 'address',
+        postal_code: 'zip',
+        natural_feature: 'address',
+        airport: 'address',
+        park: 'address',
+        point_of_interest: 'address'
+      };
+
+      addressLookupTable = [
+        'street_address',
+        'street_number',
+        'route',
+        'premise',
+        'subpremise',
+        'neighborhood',
+        'point_of_interest'
+      ];
+      addLookupTable = {
+        country: [
+          'country'
+        ],
+        city: [
+          'locality',
+          'sublocality',
+          'sublocality_level_1',
+          'sublocality_level_2',
+          'sublocality_level_3',
+          'sublocality_level_4',
+          'sublocality_level_5'
+        ],
+        state: [
+          'administrative_area_level_1',
+          'administrative_area_level_2',
+          'administrative_area_level_3',
+          'administrative_area_level_4',
+          'administrative_area_level_5'
+        ],
+        zip: [
+          'postal_code'
+        ]
+      };
 
       String.prototype.splice = function(index, count, add) {
         return this.slice(0, index) + (add || "") + this.slice(index + count);
@@ -99,13 +108,20 @@
         console.log(structured);
         structured.forEach(function (comp, idx) {
 
-          debugger;
+          //debugger;
 
           //subParsed += subtractiveParsing(comp, formatted);
-          addParsed += addictiveParsing(comp);
+          addParsed += addictiveParsing(comp, formatted);
 
           //structured.splice(idx, 1);
         });
+
+        addParsed += '' +
+          '<div>' +
+            '<strong>address: </strong>' +
+            '<span>'+generateAddress(addrParts)+'</span>' +
+          '</div>';
+
 
         //subParsed += '' +
         //  '<div>' +
@@ -120,6 +136,8 @@
         $('#structured').append(struct);
         $('#panel__results').append(addParsed);
 
+        console.log('addr: ', generateAddress(addrParts));
+
 
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
@@ -127,54 +145,61 @@
     });
   }
 
-  function subtractiveParsing(comp, formatted) {
+  function subtractiveParsing(elm, formatted) {
 
-    if (!subLookupTable[comp.types[0]] || subLookupTable[comp.types[0]] === 'address') {
+    if (!subLookupTable[elm.types[0]] || subLookupTable[elm.types[0]] === 'address') {
       return ;
     }
 
     var parsed = '';
 
-    var sIdx = formatted.lastIndexOf(comp.short_name), start, end;
-    var lIdx = formatted.lastIndexOf(comp.long_name);
+    var sIdx = formatted.lastIndexOf(elm.short_name), start, end;
+    var lIdx = formatted.lastIndexOf(elm.long_name);
 
     if (sIdx !== -1) {
       start = formatted[sIdx - 1];
-      end = formatted[sIdx + comp.short_name.length];
+      end = formatted[sIdx + elm.short_name.length];
 
       if ((sIdx === 0 || start === ' ' || start === ',') &&
         (end === undefined || end === ' ' || end === ',' )) {
         parsed += '' +
           '<div>' +
-          '<strong>'+subLookupTable[comp.types[0]]+': </strong>' +
-          '<span>'+comp.short_name+'</span>' +
+          '<strong>'+subLookupTable[elm.types[0]]+': </strong>' +
+          '<span>'+elm.short_name+'</span>' +
           '</div>';
 
-        formatted = formatted.splice(sIdx, comp.short_name.length);
+        formatted = formatted.splice(sIdx, elm.short_name.length);
       }
 
     } else if (lIdx !== -1) {
       start = formatted[lIdx - 1];
-      end = formatted[lIdx + comp.long_name.length];
+      end = formatted[lIdx + elm.long_name.length];
 
       if ((lIdx === 0 || start === ' ' || start === ',') &&
         (end === undefined || end === ' ' || end === ',' )) {
         parsed += '' +
           '<div>' +
-          '<strong>'+subLookupTable[comp.types[0]]+': </strong>' +
-          '<span>'+comp.long_name+'</span>' +
+          '<strong>'+subLookupTable[elm.types[0]]+': </strong>' +
+          '<span>'+elm.long_name+'</span>' +
           '</div>';
 
-        formatted = formatted.splice(lIdx, comp.long_name.length);
+        formatted = formatted.splice(lIdx, elm.long_name.length);
       }
     }
 
     return parsed;
   }
 
-  function addictiveParsing(elm) {
+  function addictiveParsing(elm, formatted) {
 
     var parsed = '';
+
+    if (addressLookupTable.indexOf(elm.types[0]) !== -1 && formatted.indexOf(elm.long_name) !== -1) {
+      addrParts.push({
+        name: elm['long_name'],
+        idx: formatted.indexOf(elm.long_name)
+      });
+    }
 
     Object.keys(addLookupTable).forEach(function(typeKey) {
       var match = false;
@@ -196,5 +221,16 @@
 
   }
 
+  function generateAddress(addrObject) {
+
+    var address = [];
+    addrObject.sort(function(x,y){return x.idx - y.idx}).forEach(function(elm) {
+      address.push(elm.name);
+    });
+
+    return address.join(' ');
+  }
+
   google.maps.event.addDomListener(window, 'load', initialize);
+
 
