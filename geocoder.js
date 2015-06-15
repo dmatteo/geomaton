@@ -2,7 +2,7 @@
 
   var geocoder;
 
-  var lookupTable = {
+  var subLookupTable = {
     street_address: 'address',
     street_number: 'address',
     route: 'address',
@@ -33,9 +33,45 @@
     point_of_interest: 'address'
   };
 
+  var addLookupTable = {
+    //address: [
+    //  'street_address',
+    //  'street_number',
+    //  'route'
+    //],
+    country: [
+      'country'
+    ],
+    city: [
+      'locality',
+      'sublocality',
+      'sublocality_level_1',
+      'sublocality_level_2',
+      'sublocality_level_3',
+      'sublocality_level_4',
+      'sublocality_level_5'
+    ],
+    state: [
+      'administrative_area_level_1',
+      'administrative_area_level_2',
+      'administrative_area_level_3',
+      'administrative_area_level_4',
+      'administrative_area_level_5'
+    ],
+    zip: [
+      'postal_code'
+    ]
+  };
+
   function initialize() {
     geocoder = new google.maps.Geocoder();
   }
+
+  var sortFoo = function(x, y) {
+    if (x.types[0] > y.types[0]) return 1;
+    if (x.types[0] < y.types[0]) return -1;
+    return 0;
+  };
 
   function codeAddressAndShowList() {
     var address = document.getElementById('address').value;
@@ -53,7 +89,7 @@
 
         console.log(results);
 
-        var structured = results[0].address_components;
+        var structured = results[0].address_components.sort(sortFoo);
         var formatted = results[0].formatted_address;
         var purgedFormatted = formatted;
 
@@ -63,24 +99,26 @@
         console.log(structured);
         structured.forEach(function (comp, idx) {
 
-          subParsed += subtractiveParsing(comp, formatted);
+          debugger;
+
+          //subParsed += subtractiveParsing(comp, formatted);
           addParsed += addictiveParsing(comp);
 
-          structured.splice(idx, 1);
+          //structured.splice(idx, 1);
         });
 
-        subParsed += '' +
-          '<div>' +
-            '<strong>address: </strong>' +
-            '<span>'+formatted.replace(/[, ]*$/, '')+'</span>' +
-          '</div>'+
-        '</div>';
+        //subParsed += '' +
+        //  '<div>' +
+        //    '<strong>address: </strong>' +
+        //    '<span>'+formatted.replace(/[, ]*$/, '')+'</span>' +
+        //  '</div>'+
+        //'</div>';
 
         addParsed += '</div>';
 
         $('#structured, #formatted, #panel__results').empty();
         $('#structured').append(struct);
-        $('#panel__results').append(subParsed).append(addParsed);
+        $('#panel__results').append(addParsed);
 
 
       } else {
@@ -91,7 +129,7 @@
 
   function subtractiveParsing(comp, formatted) {
 
-    if (!lookupTable[comp.types[0]] || lookupTable[comp.types[0]] === 'address') {
+    if (!subLookupTable[comp.types[0]] || subLookupTable[comp.types[0]] === 'address') {
       return ;
     }
 
@@ -108,7 +146,7 @@
         (end === undefined || end === ' ' || end === ',' )) {
         parsed += '' +
           '<div>' +
-          '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
+          '<strong>'+subLookupTable[comp.types[0]]+': </strong>' +
           '<span>'+comp.short_name+'</span>' +
           '</div>';
 
@@ -123,7 +161,7 @@
         (end === undefined || end === ' ' || end === ',' )) {
         parsed += '' +
           '<div>' +
-          '<strong>'+lookupTable[comp.types[0]]+': </strong>' +
+          '<strong>'+subLookupTable[comp.types[0]]+': </strong>' +
           '<span>'+comp.long_name+'</span>' +
           '</div>';
 
@@ -136,32 +174,11 @@
 
   function addictiveParsing(elm) {
 
-    var lookupTable = {
-      //address: [
-      //  'street_address',
-      //  'street_number',
-      //  'route'
-      //],
-      country: [
-        'country'
-      ],
-      city: [
-        'locality'
-      ],
-      state: [
-        'administrative_area_level_1',
-        'administrative_area_level_2',
-        'administrative_area_level_3'
-      ],
-      zip: [
-        'postal_code'
-      ]
-    };
     var parsed = '';
 
-    Object.keys(lookupTable).forEach(function(typeKey) {
+    Object.keys(addLookupTable).forEach(function(typeKey) {
       var match = false;
-      lookupTable[typeKey].forEach(function(subtype) {
+      addLookupTable[typeKey].forEach(function(subtype, idx) {
         if (match === false && elm.types.indexOf(subtype) !== -1) {
           parsed += '' +
             '<div>' +
@@ -169,6 +186,7 @@
             '<span>'+elm.long_name+'</span>' +
             '</div>';
 
+          addLookupTable[typeKey] = [];
           match = true;
         }
       })
