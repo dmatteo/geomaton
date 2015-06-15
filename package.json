@@ -1,0 +1,34 @@
+{
+  "name": "geomaton",
+  "version": "0.0.0",
+  "description": "geomaton.js let's you parse Google's Geocode API V3 to whatever format your application is using",
+  "main": "lib/geomaton.js",
+  "directories": {
+    "test": "test"
+  },
+  "files": [
+    "lib/geomaton.js"
+  ],
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmatteo/gmaps-v3-exp.git"
+  },
+  "keywords": [
+    "google",
+    "geocode",
+    "gmaps"
+  ],
+  "author": "Domenico Matteo <matteo.domenico@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmatteo/gmaps-v3-exp/issues"
+  },
+  "homepage": "https://github.com/dmatteo/gmaps-v3-exp",
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "unexpected": "^8.2.0"
+  }
+}
