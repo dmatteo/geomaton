@@ -65,7 +65,8 @@ TODO: add example using Google own example
 ## Test
 
 ```
-npm test
+npm install
+mocha
 ```
 
 ## License
