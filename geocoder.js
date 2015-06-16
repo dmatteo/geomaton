@@ -4,7 +4,7 @@
     addrParts,
     subLookupTable,
     addressLookupTable,
-    addLookupTable;
+    lookupTable;
 
   function initialize() {
     geocoder = new google.maps.Geocoder();
@@ -61,7 +61,7 @@
         'neighborhood',
         'point_of_interest'
       ];
-      addLookupTable = {
+      lookupTable = {
         country: [
           'country'
         ],
@@ -201,9 +201,9 @@
       });
     }
 
-    Object.keys(addLookupTable).forEach(function(typeKey) {
+    Object.keys(lookupTable).forEach(function(typeKey) {
       var match = false;
-      addLookupTable[typeKey].forEach(function(subtype, idx) {
+      lookupTable[typeKey].forEach(function(subtype, idx) {
         if (match === false && elm.types.indexOf(subtype) !== -1) {
           parsed += '' +
             '<div>' +
@@ -211,7 +211,7 @@
             '<span>'+elm.long_name+'</span>' +
             '</div>';
 
-          addLookupTable[typeKey] = [];
+          lookupTable[typeKey] = [];
           match = true;
         }
       })
