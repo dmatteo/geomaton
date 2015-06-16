@@ -12,7 +12,7 @@
   "scripts": {
     "test": "mocha",
     "travis": "npm run coverage",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter dot"
+    "coverage": " istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info"
   },
   "repository": {
     "type": "git",
