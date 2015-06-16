@@ -72,11 +72,20 @@ var results = [
 ];
 
 var geomaton = require('../lib/geomaton');
-var expect = require('unexpected');
+var expect = require('unexpected').clone();
+expect.installPlugin(require('unexpected-mitm'));
 
 describe('geomaton.js', function() {
+
   it('should output something', function() {
     var parsed = geomaton.parse(results);
-    expect(parsed, 'to be defined');
-  })
+    expect(parsed, 'to satisfy', {
+      state: 'California',
+      country: 'United States',
+      city: 'San Francisco',
+      zip: '94105'
+    });
+  });
+
+  it('should config')
 });
