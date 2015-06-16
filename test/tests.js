@@ -476,6 +476,89 @@ describe('geomaton.js', function() {
       }, 'to be parsed as', parsed);
     });
 
-  })
+  });
+
+  describe('should apply a config and parse accordingly', function() {
+
+    it('Italy 1 with config', function() {
+      var lookupTable = {
+        country: [
+          'country'
+        ],
+        state: [
+          'administrative_area_level_1',
+          'administrative_area_level_2',
+          'administrative_area_level_3',
+          'administrative_area_level_4',
+          'administrative_area_level_5'
+        ],
+        zip: [
+          'postal_code'
+        ]
+      };
+      var addressLookupTable = [
+        'street_address',
+        'street_number',
+        'route',
+        'premise',
+        'subpremise',
+        'neighborhood',
+        'point_of_interest',
+        'park',
+        'airport',
+        'locality',
+        'sublocality',
+        'sublocality_level_1',
+        'sublocality_level_2',
+        'sublocality_level_3',
+        'sublocality_level_4',
+        'sublocality_level_5'
+      ];
+      geomaton.config(lookupTable, addressLookupTable);
+
+      var address = 'via Milano 25, Cologno Monzese';
+      var parsed =    {
+          state: 'Lombardia', // should be removed
+          country: 'Italy', // should be removed
+          zip: '20093', // should be removed
+          address: 'Via Milano 25 Cologno Monzese' // should be removed
+        };
+      return expect(address, 'with http mocked out', {
+        request: { url: 'GET /maps/api/geocode/json?address=via%20Milano%2025,%20Cologno%20Monzese', headers: { Host: 'maps.googleapis.com' } },
+        response: {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8', Expires: 'Wed, 17 Jun 2015 21:10:30 GMT', 'Cache-Control': 'public, max-age=86400', 'Access-Control-Allow-Origin': '*', Server: 'mafe',
+            'X-XSS-Protection': '1; mode=block', 'X-Frame-Options': 'SAMEORIGIN', 'Alternate-Protocol': '443:quic,p=1', 'Accept-Ranges': 'none', Vary: 'Accept-Language,Accept-Encoding'
+          },
+          body: {
+            results: [
+              {
+                address_components: [
+                  { long_name: '25', short_name: '25', types: [ 'street_number' ] },
+                  { long_name: 'Via Milano', short_name: 'Via Milano', types: [ 'route' ] },
+                  { long_name: 'Cologno Monzese', short_name: 'Cologno Monzese', types: [ 'locality', 'political' ] },
+                  { long_name: 'Cologno Monzese', short_name: 'Cologno Monzese', types: [ 'administrative_area_level_3', 'political' ] },
+                  { long_name: 'Città Metropolitana di Milano', short_name: 'MI', types: [ 'administrative_area_level_2', 'political' ] },
+                  { long_name: 'Lombardia', short_name: 'Lombardia', types: [ 'administrative_area_level_1', 'political' ] },
+                  { long_name: 'Italy', short_name: 'IT', types: [ 'country', 'political' ] },
+                  { long_name: '20093', short_name: '20093', types: [ 'postal_code' ] }
+                ],
+                formatted_address: 'Via Milano, 25, 20093 Cologno Monzese MI, Italy',
+                geometry: {
+                  location: { lat: 45.52802459999999, lng: 9.2784896 },
+                  location_type: 'ROOFTOP',
+                  viewport: { northeast: { lat: 45.5293735802915, lng: 9.279838580291502 }, southwest: { lat: 45.5266756197085, lng: 9.277140619708497 } }
+                },
+                place_id: 'ChIJh5DvQQq4hkcRhubw8kLWTic',
+                types: [ 'street_address' ]
+              }
+            ],
+            status: 'OK'
+          }
+        }
+      }, 'to be parsed as', parsed);
+    });
+
+  });
 
 });
