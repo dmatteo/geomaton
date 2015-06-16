@@ -1,6 +1,9 @@
 
 # geomaton
 
+[![Build Status](https://travis-ci.org/dmatteo/geomaton.svg?branch=master)](https://travis-ci.org/dmatteo/geomaton)
+
+
 `geomaton` is a parsing library that will let you convert the response you get from Google Geocoding API v3
 into an object that may be more suitable for your application, whether is it frontend or backend.  
   
