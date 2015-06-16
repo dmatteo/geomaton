@@ -29,6 +29,9 @@
   "homepage": "https://github.com/dmatteo/gmaps-v3-exp",
   "devDependencies": {
     "mocha": "^2.2.5",
-    "unexpected": "^8.2.0"
+    "unexpected": "^8.2.0",
+    "messy": "^6.2.0",
+    "unexpected-messy": "^4.0.0",
+    "unexpected-mitm": "^6.0.0"
   }
 }
