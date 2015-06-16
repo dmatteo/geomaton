@@ -2,6 +2,7 @@
 # geomaton
 
 [![Build Status](https://travis-ci.org/dmatteo/geomaton.svg?branch=master)](https://travis-ci.org/dmatteo/geomaton)
+[![Coverage Status](https://coveralls.io/repos/dmatteo/geomaton/badge.svg?branch=master)](https://coveralls.io/r/dmatteo/geomaton?branch=master)
 
 
 `geomaton` is a parsing library that will let you convert the response you get from Google Geocoding API v3
