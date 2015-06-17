@@ -1,6 +1,6 @@
 {
   "name": "geomaton",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "geomaton.js let's you parse Google's Geocode API V3 to whatever format your application is using",
   "main": "lib/geomaton.js",
   "directories": {
