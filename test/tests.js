@@ -482,6 +482,24 @@ describe('geomaton.js', function() {
 
     it('Italy 1 with config', function() {
       var lookupTable = {
+        address: [
+          'street_address',
+          'street_number',
+          'route',
+          'premise',
+          'subpremise',
+          'neighborhood',
+          'point_of_interest',
+          'park',
+          'airport',
+          'locality',
+          'sublocality',
+          'sublocality_level_1',
+          'sublocality_level_2',
+          'sublocality_level_3',
+          'sublocality_level_4',
+          'sublocality_level_5'
+        ],
         country: [
           'country'
         ],
@@ -496,25 +514,7 @@ describe('geomaton.js', function() {
           'postal_code'
         ]
       };
-      var addressLookupTable = [
-        'street_address',
-        'street_number',
-        'route',
-        'premise',
-        'subpremise',
-        'neighborhood',
-        'point_of_interest',
-        'park',
-        'airport',
-        'locality',
-        'sublocality',
-        'sublocality_level_1',
-        'sublocality_level_2',
-        'sublocality_level_3',
-        'sublocality_level_4',
-        'sublocality_level_5'
-      ];
-      geomaton.config(lookupTable, addressLookupTable);
+      geomaton.config(lookupTable);
 
       var address = 'via Milano 25, Cologno Monzese';
       var parsed =    {
