@@ -55,15 +55,62 @@ Other than the parse method, which only takes an API response as parameter,
 ### parse(apiResponse)
 
 ```javascript
-jsdomify.create()
+var parsedResponse = geomaton.parse(response)
 ```
 
 Create a new DOM instance (with or withouth the optional DOM string).
 
 ### config()
-TODO: add doc
 
+You can configure the parsing by passing a custom `lookupTable` into `geomaton`
+```javascript
+geomaton.config(lookupTable)
+```
+  
+  
+Below is the default lookupTable that `geomaton` will use if you don't provide your own.  
+This table contains all the types that Google Geocode API V3 can return.
+ 
+```javascript
+{
+  address: [
+    'street_address',
+    'street_number',
+    'route',
+    'premise',
+    'subpremise',
+    'neighborhood',
+    'point_of_interest',
+    'park',
+    'airport'
+  ],
+  country: [
+    'country'
+  ],
+  city: [
+    'locality',
+    'sublocality',
+    'sublocality_level_1',
+    'sublocality_level_2',
+    'sublocality_level_3',
+    'sublocality_level_4',
+    'sublocality_level_5'
+  ],
+  state: [
+    'administrative_area_level_1',
+    'administrative_area_level_2',
+    'administrative_area_level_3',
+    'administrative_area_level_4',
+    'administrative_area_level_5'
+  ],
+  zip: [
+    'postal_code'
+  ]
+}
+```
 
+While providing your lookupTable, The only mandatory property is `address`, while all the others can be 
+whatever you want (or even non existent)
 ## Usage examples
 TODO: add example using Google own example
 
@@ -75,4 +122,24 @@ mocha
 ```
 
 ## License
-MIT
+
+The MIT License (MIT)  
+  
+Permission is hereby granted, free of charge, to any person obtaining a copy    
+of this software and associated documentation files (the "Software"), to deal  
+in the Software without restriction, including without limitation the rights  
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell  
+copies of the Software, and to permit persons to whom the Software is  
+furnished to do so, subject to the following conditions:  
+  
+The above copyright notice and this permission notice shall be included in all  
+copies or substantial portions of the Software.  
+  
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,  
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER  
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
+SOFTWARE.  
+  
