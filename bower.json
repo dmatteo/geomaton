@@ -1,0 +1,28 @@
+{
+  "name": "geomaton",
+  "version": "0.2.2",
+  "homepage": "https://github.com/dmatteo/geomaton",
+  "authors": [
+    "Domenico Matteo <matteo.domenico@gmail.com>"
+  ],
+  "description": "geomaton.js let's you parse Google's Geocode API V3 to whatever format your application is using",
+  "main": "lib/geomaton.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "google",
+    "geocode",
+    "gmaps"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
