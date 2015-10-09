@@ -31,12 +31,12 @@
   "homepage": "https://github.com/dmatteo/geomaton",
   "devDependencies": {
     "mocha": "^2.2.5",
-    "unexpected": "^8.2.0",
+    "unexpected": "^10.0.1",
     "messy": "^6.2.0",
-    "unexpected-messy": "^4.0.0",
-    "unexpected-mitm": "^6.0.0",
-    "unexpected-http": "^4.0.0",
-    "mocha-lcov-reporter": "0.0.2",
+    "unexpected-messy": "^5.0.0",
+    "unexpected-mitm": "^8.0.0",
+    "unexpected-http": "^5.0.0",
+    "mocha-lcov-reporter": "1.0.0",
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.15"
   }
