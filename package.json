@@ -21,6 +21,9 @@
   "keywords": [
     "google",
     "geocode",
+    "geocoding",
+    "reverse geocode",
+    "reverse geocoding",
     "gmaps"
   ],
   "author": "Domenico Matteo <matteo.domenico@gmail.com>",
