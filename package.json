@@ -10,7 +10,7 @@
     "lib/geomaton.js"
   ],
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --compilers js:babel-register",
     "travis": "npm run coverage",
     "coverage": " istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec"
   },
@@ -36,6 +36,7 @@
     "babel": "6.3.26",
     "babel-cli": "6.4.5",
     "babel-preset-es2015": "6.3.13",
+    "babel-register": "6.4.3",
     "coveralls": "2.11.6",
     "istanbul": "0.4.2",
     "magicpen-media": "1.5.1",
