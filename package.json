@@ -30,14 +30,21 @@
   },
   "homepage": "https://github.com/dmatteo/geomaton",
   "devDependencies": {
+    "babel": "6.3.26",
+    "babel-cli": "6.4.5",
+    "babel-preset-es2015": "6.3.13",
+    "coveralls": "2.11.6",
+    "istanbul": "0.4.2",
+    "magicpen-media": "1.5.1",
+    "messy": "6.7.1",
     "mocha": "2.3.4",
-    "unexpected": "8.2.0",
-    "messy": "6.2.0",
-    "unexpected-messy": "4.0.0",
-    "unexpected-mitm": "6.0.0",
-    "unexpected-http": "4.0.0",
-    "mocha-lcov-reporter": "0.0.2",
-    "coveralls": "2.11.4",
-    "istanbul": "0.4.0"
+    "mocha-lcov-reporter": "1.0.0",
+    "unexpected": "10.7.0",
+    "unexpected-http": "5.1.0",
+    "unexpected-messy": "5.1.0",
+    "unexpected-mitm": "8.1.1"
+  },
+  "dependencies": {
+    "geocoder": "0.2.2"
   }
 }
