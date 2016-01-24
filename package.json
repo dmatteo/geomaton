@@ -10,9 +10,10 @@
     "lib/geomaton.js"
   ],
   "scripts": {
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "compile": "babel src/ -d lib/",
     "test": "mocha --compilers js:babel-register",
-    "travis": "npm run coverage",
-    "coverage": " istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec"
+    "travis": "npm run coverage"
   },
   "repository": {
     "type": "git",
