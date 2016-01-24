@@ -1,15 +1,34 @@
-var geomaton = require('../lib/geomaton');
+//var geomaton = require('../lib/geomaton');
+//
+//var expect = require('unexpected').clone();
+//expect.installPlugin(require('unexpected-mitm'));
+//expect.installPlugin(require('unexpected-http'));
+//
+//expect.addAssertion('to be parsed as', function (expect, subject, value) {
+//  return expect('https://maps.googleapis.com/maps/api/geocode/json?address=' + subject, 'to yield response',
+//    { body: expect.it('when passed as parameter to', geomaton.parse, 'to equal', value) });
+//});
 
-var expect = require('unexpected').clone();
-expect.installPlugin(require('unexpected-mitm'));
-expect.installPlugin(require('unexpected-http'));
+import { geocode, reverseGeocode, parseAddressComponent } from '../src/geomaton';
 
-expect.addAssertion('to be parsed as', function (expect, subject, value) {
-  return expect('https://maps.googleapis.com/maps/api/geocode/json?address=' + subject, 'to yield response',
-    { body: expect.it('when passed as parameter to', geomaton.parse, 'to equal', value) });
+describe('Geomaton 1.0', () => {
+
+
+  it('should resolve the address', () => {
+
+    return geocode('via Milano 25').then((data) => {
+      return data.results.map((el) => {
+        console.log(parseAddressComponent(el));
+      })
+    }, (err) => {
+      console.log('err?', err);
+
+    });
+
+  });
 });
 
-describe('geomaton.js', function() {
+describe.skip('geomaton.js', function() {
 
   describe('should parse correctly the following address', function() {
 
