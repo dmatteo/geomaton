@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/dmatteo/geomaton",
   "devDependencies": {
-    "mocha": "2.3.4",
+    "mocha": "2.4.1",
     "unexpected": "8.2.0",
     "messy": "6.2.0",
     "unexpected-messy": "4.0.0",
