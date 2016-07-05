@@ -34,7 +34,7 @@
     "unexpected": "8.2.0",
     "messy": "6.2.0",
     "unexpected-messy": "4.0.0",
-    "unexpected-mitm": "6.0.0",
+    "unexpected-mitm": "8.1.0",
     "unexpected-http": "4.0.0",
     "mocha-lcov-reporter": "1.1.0",
     "coveralls": "2.11.4",
