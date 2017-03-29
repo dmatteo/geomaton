@@ -35,7 +35,7 @@
     "messy": "6.2.0",
     "unexpected-messy": "4.0.0",
     "unexpected-mitm": "6.0.0",
-    "unexpected-http": "4.0.0",
+    "unexpected-http": "5.7.0",
     "mocha-lcov-reporter": "1.1.0",
     "coveralls": "2.11.4",
     "istanbul": "0.4.0"
